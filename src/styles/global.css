@@ -1,44 +1,251 @@
+/* ===================================================================
+   Design Tokens
+   =================================================================== */
+:root {
+  /* Colors */
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-active: #1d4ed8;
+  --color-secondary: #6b7280;
+  --color-secondary-hover: #4b5563;
+  --color-success: #10b981;
+  --color-success-light: #ecfdf5;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-error-light: #fef2f2;
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-border: #e5e7eb;
+  --color-border-focus: #3b82f6;
+
+  /* Typography */
+  --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --line-height: 1.5;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Borders */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08),
+    0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.15);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+}
+
+/* ===================================================================
+   Reset & Base
+   =================================================================== */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  background: #f5f5f5;
-  color: #111827;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  color: var(--color-text);
+  background: var(--color-bg);
+  min-height: 100vh;
 }
 
-main {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 16px;
+/* ===================================================================
+   Typography
+   =================================================================== */
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text);
 }
 
-label {
-  display: block;
-  margin-bottom: 12px;
+h1 {
+  font-size: var(--font-size-2xl);
+}
+h2 {
+  font-size: var(--font-size-xl);
+}
+h3 {
+  font-size: var(--font-size-lg);
 }
 
+/* ===================================================================
+   Form Elements – Base Reset
+   =================================================================== */
 input,
 select,
 textarea,
 button {
   font: inherit;
+  line-height: var(--line-height);
 }
 
 input,
 select,
 textarea {
+  display: block;
   width: 100%;
-  padding: 8px;
-  margin-top: 4px;
+  padding: 10px 12px;
+  margin-top: var(--space-1);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  outline: none;
 }
 
-button {
-  padding: 8px 16px;
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+input[readonly] {
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  cursor: default;
+}
+
+input[readonly]:focus {
+  border-color: var(--color-border);
+  box-shadow: none;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 32px;
   cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+}
+
+label:focus-within {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* ===================================================================
+   Buttons – Base
+   =================================================================== */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 10px 20px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    border-color var(--transition-fast), box-shadow var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===================================================================
+   Layout Container
+   =================================================================== */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+/* ===================================================================
+   Utility: list reset
+   =================================================================== */
+ul {
+  list-style: none;
+}
+
+/* ===================================================================
+   Responsive
+   =================================================================== */
+@media (max-width: 767px) {
+  main {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  h1 {
+    font-size: var(--font-size-xl);
+  }
+  h2 {
+    font-size: var(--font-size-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  main {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1440px) {
+  main {
+    max-width: 960px;
+  }
 }

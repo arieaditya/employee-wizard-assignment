@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { postBasicInfo } from "../services/basicInfoApi";
 import { postDetails } from "../services/detailsApi";
 import { type SubmitState } from "../components/ProgressLog";
+import s from "./WizardPage.module.css";
 
 const WizardPage = () => {
   const navigate = useNavigate();
@@ -80,7 +81,8 @@ const WizardPage = () => {
       await postDetails(detailsPayload);
       setSubmitState((prev) => ({ ...prev, details: "success", done: true }));
 
-      // 3) Redirect to /employees
+      // 3) Clear draft & redirect to /employees
+      clearDraft(role as UserRole);
       setTimeout(() => navigate("/employees"), 500);
     } catch (e) {
       console.error(e);
@@ -155,30 +157,40 @@ const WizardPage = () => {
   }, [basicInfo.department]);
 
   return (
-    <main>
-      <h1>Employee Wizard ({role})</h1>
+    <main className={s["c-wizard"]}>
+      <div className={s["c-wizard__header"]}>
+        <h1 className={s["c-wizard__title"]}>Employee Wizard</h1>
+        <span className={s["c-wizard__badge"]}>{role}</span>
+      </div>
 
       {role === "admin" && step === 1 && (
-        <BasicInfoStep
-          value={basicInfo}
-          onChange={setBasicInfo}
-          onNext={goNextFromStep1}
-        />
+        <div className={s["c-wizard__step"]}>
+          <BasicInfoStep
+            value={basicInfo}
+            onChange={setBasicInfo}
+            onNext={goNextFromStep1}
+          />
+        </div>
       )}
 
       {step === 2 && (
-        <DetailsStep
-          basicInfo={basicInfo}
-          value={details}
-          onChange={setDetails}
-          onSubmit={handleSubmit}
-          submitState={submitState}
-          submitting={submitting}
-        />
+        <div className={s["c-wizard__step"]}>
+          <DetailsStep
+            basicInfo={basicInfo}
+            value={details}
+            onChange={setDetails}
+            onSubmit={handleSubmit}
+            submitState={submitState}
+            submitting={submitting}
+          />
+        </div>
       )}
 
-      <button type="button" onClick={handleClearDraft}>
-        Clear Draft ({role})
+      <button
+        type="button"
+        className={s["c-wizard__clear"]}
+        onClick={handleClearDraft}>
+        Clear Draft
       </button>
     </main>
   );

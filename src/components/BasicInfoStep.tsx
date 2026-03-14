@@ -2,6 +2,7 @@ import type { BasicInfoForm } from "../types/employee";
 import { useAutocomplete } from "../hooks/useAutoComplete";
 import { fetchDepartments } from "../services/basicInfoApi";
 import AsyncAutocomplete from "../components/AsyncAutoComplete";
+import s from "./BasicInfoStep.module.css";
 
 type Department = { id: number; name: string };
 
@@ -31,39 +32,44 @@ const BasicInfoStep = ({ value, onChange, onNext }: Props) => {
   };
 
   return (
-    <section>
-      <h2>Step 1 – Basic Info</h2>
+    <section className={s["c-basicInfo"]}>
+      <h2 className={s["c-basicInfo__heading"]}>Step 1 – Basic Info</h2>
 
-      <label>
-        Full Name
-        <input
-          type="text"
-          value={value.fullName}
-          onChange={handleFieldChange("fullName")}
+      <div className={s["c-basicInfo__fields"]}>
+        <label>
+          Full Name
+          <input
+            type="text"
+            value={value.fullName}
+            onChange={handleFieldChange("fullName")}
+          />
+        </label>
+
+        <label>
+          Email
+          <input
+            type="email"
+            value={value.email}
+            onChange={handleFieldChange("email")}
+          />
+        </label>
+
+        <AsyncAutocomplete<Department>
+          label="Department"
+          value={value.department}
+          onChange={handleDepartmentChange}
+          displayKey="name"
+          suggestions={results}
+          loading={loading}
+          error={error}
+          onQueryChange={setQuery}
         />
-      </label>
+      </div>
 
-      <label>
-        Email
-        <input
-          type="email"
-          value={value.email}
-          onChange={handleFieldChange("email")}
-        />
-      </label>
-
-      <AsyncAutocomplete<Department>
-        label="Department"
-        value={value.department}
-        onChange={handleDepartmentChange}
-        displayKey="name"
-        suggestions={results}
-        loading={loading}
-        error={error}
-        onQueryChange={setQuery}
-      />
-
-      <button onClick={onNext} disabled={!isValid}>
+      <button
+        className={s["c-basicInfo__next"]}
+        onClick={onNext}
+        disabled={!isValid}>
         Next
       </button>
     </section>

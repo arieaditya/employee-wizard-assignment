@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { fileToBase64 } from "../utils/file";
+import s from "./PhotoUpload.module.css";
 
 type Props = {
   value: string; // base64
@@ -6,6 +8,8 @@ type Props = {
 };
 
 const PhotoUpload = ({ value, onChange }: Props) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -18,20 +22,25 @@ const PhotoUpload = ({ value, onChange }: Props) => {
   };
 
   return (
-    <div>
-      <label>
-        Photo
-        <input type="file" accept="image/*" onChange={handleFileChange} />
+    <div className={s["c-photo"]}>
+      <span className={s["c-photo__label"]}>Photo</span>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className={s["c-photo__input"]}
+        onChange={handleFileChange}
+        aria-label="Photo"
+      />
+      <label
+        className={s["c-photo__button"]}
+        onClick={() => inputRef.current?.click()}>
+        Choose file
       </label>
 
       {value && (
-        <div style={{ marginTop: 8 }}>
-          <div>Preview:</div>
-          <img
-            src={value}
-            alt="Preview"
-            style={{ maxWidth: 120, maxHeight: 120, objectFit: "cover" }}
-          />
+        <div className={s["c-photo__preview"]}>
+          <img src={value} alt="Preview" className={s["c-photo__image"]} />
         </div>
       )}
     </div>

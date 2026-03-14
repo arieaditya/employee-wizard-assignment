@@ -1,0 +1,59 @@
+/* ===================================================================
+   BasicInfoStep
+   =================================================================== */
+
+.c-basicInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.c-basicInfo__heading {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Form field group */
+.c-basicInfo__field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Next button */
+.c-basicInfo__next {
+  align-self: flex-end;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 32px;
+  font-weight: 600;
+  font-size: var(--font-size-base);
+}
+
+.c-basicInfo__next:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.c-basicInfo__next:active:not(:disabled) {
+  background: var(--color-primary-active);
+}
+
+/* ===================================================================
+   Responsive
+   =================================================================== */
+@media (min-width: 768px) {
+  .c-basicInfo__fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .c-basicInfo__fields > :last-child {
+    grid-column: 1 / -1;
+  }
+}

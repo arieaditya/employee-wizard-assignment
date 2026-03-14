@@ -1,0 +1,79 @@
+/* ===================================================================
+   AsyncAutocomplete
+   =================================================================== */
+
+.c-autocomplete {
+  position: relative;
+}
+
+/* Loading indicator */
+.c-autocomplete__loading {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.c-autocomplete__loading::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: autocomplete-spin 0.6s linear infinite;
+}
+
+@keyframes autocomplete-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error */
+.c-autocomplete__error {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  font-weight: 500;
+}
+
+/* Dropdown list */
+.c-autocomplete__dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 10;
+  margin-top: var(--space-1);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Dropdown item */
+.c-autocomplete__item {
+  padding: 10px var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.c-autocomplete__item:hover {
+  background: var(--color-bg);
+}
+
+.c-autocomplete__item:active {
+  background: var(--color-border);
+}
+
+.c-autocomplete__item + .c-autocomplete__item {
+  border-top: 1px solid var(--color-border);
+}

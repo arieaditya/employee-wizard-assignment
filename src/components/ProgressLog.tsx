@@ -1,3 +1,5 @@
+import s from "./ProgressLog.module.css";
+
 type StepStatus = "idle" | "pending" | "success";
 
 export type SubmitState = {
@@ -15,23 +17,55 @@ const ProgressLog = ({ state }: Props) => {
   const { basicInfo, details, done, error } = state;
 
   return (
-    <div style={{ marginTop: 16 }}>
+    <div className={s["c-progress"]}>
       {basicInfo !== "idle" && (
-        <div>
-          {basicInfo === "pending" && "⏳ Submitting basicInfo…"}
-          {basicInfo === "success" && "✅ basicInfo saved!"}
+        <div className={s["c-progress__item"]}>
+          <span
+            className={`${s["c-progress__icon"]} ${
+              basicInfo === "pending"
+                ? s["c-progress__icon--pending"]
+                : s["c-progress__icon--success"]
+            }`}>
+            {basicInfo === "success" && "\u2713"}
+          </span>
+          <span
+            className={`${s["c-progress__text"]} ${
+              basicInfo === "success" ? s["c-progress__text--success"] : ""
+            }`}>
+            {basicInfo === "pending"
+              ? "Submitting Basic Info\u2026"
+              : "Basic Info saved!"}
+          </span>
         </div>
       )}
 
       {details !== "idle" && (
-        <div>
-          {details === "pending" && "⏳ Submitting details…"}
-          {details === "success" && "✅ details saved!"}
+        <div className={s["c-progress__item"]}>
+          <span
+            className={`${s["c-progress__icon"]} ${
+              details === "pending"
+                ? s["c-progress__icon--pending"]
+                : s["c-progress__icon--success"]
+            }`}>
+            {details === "success" && "\u2713"}
+          </span>
+          <span
+            className={`${s["c-progress__text"]} ${
+              details === "success" ? s["c-progress__text--success"] : ""
+            }`}>
+            {details === "pending"
+              ? "Submitting Details\u2026"
+              : "Details saved!"}
+          </span>
         </div>
       )}
 
-      {done && !error && <div>🎉 All data processed successfully!</div>}
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {done && !error && (
+        <div className={s["c-progress__done"]}>
+          All data processed successfully!
+        </div>
+      )}
+      {error && <div className={s["c-progress__error"]}>{error}</div>}
     </div>
   );
 };

@@ -1,0 +1,210 @@
+/* ===================================================================
+   EmployeesPage
+   =================================================================== */
+
+.c-employees {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Header */
+.c-employees__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.c-employees__title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+}
+
+.c-employees__add {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+.c-employees__add:hover {
+  background: var(--color-primary-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* Status messages */
+.c-employees__loading {
+  text-align: center;
+  padding: var(--space-12) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.c-employees__loading::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto var(--space-3);
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.c-employees__error {
+  text-align: center;
+  padding: var(--space-6);
+  color: var(--color-error);
+  background: var(--color-error-light);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.c-employees__empty {
+  text-align: center;
+  padding: var(--space-12) 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Table */
+.c-employees__tableWrap {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.c-employees__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.c-employees__table thead {
+  background: var(--color-bg);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.c-employees__table th {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.c-employees__table td {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.c-employees__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.c-employees__table tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.c-employees__table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+/* Photo thumbnail */
+.c-employees__photo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--color-border);
+}
+
+.c-employees__noPhoto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  border: 2px solid var(--color-border);
+}
+
+/* Pagination */
+.c-employees__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.c-employees__pageBtn {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.c-employees__pageBtn:hover:not(:disabled) {
+  background: var(--color-bg);
+  border-color: var(--color-secondary);
+}
+
+.c-employees__pageInfo {
+  padding: 0 var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* ===================================================================
+   Responsive: scrollable table on small screens
+   =================================================================== */
+@media (max-width: 767px) {
+  .c-employees__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .c-employees__add {
+    width: 100%;
+  }
+
+  .c-employees__tableWrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .c-employees__table {
+    min-width: 560px;
+  }
+}

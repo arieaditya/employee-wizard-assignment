@@ -7,5 +7,8 @@ module.exports = {
     ],
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+  moduleNameMapper: {
+    "\\.module\\.css$": "identity-obj-proxy",
+  },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };

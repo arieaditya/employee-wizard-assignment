@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchBasicInfo } from "../services/basicInfoApi";
 import { fetchDetails } from "../services/detailsApi";
 import { mergeByEmail, type MergedEmployee } from "../utils/mergeEmployees";
+import s from "./EmployeesPage.module.css";
 
 const PAGE_LIMIT = 5;
 
@@ -47,62 +48,71 @@ const EmployeesPage = () => {
   };
 
   return (
-    <main>
-      <header>
-        <h1>Employees</h1>
-        <button onClick={handleAddEmployee}>+ Add Employee</button>
+    <main className={s["c-employees"]}>
+      <header className={s["c-employees__header"]}>
+        <h1 className={s["c-employees__title"]}>Employees</h1>
+        <button className={s["c-employees__add"]} onClick={handleAddEmployee}>
+          + Add Employee
+        </button>
       </header>
 
-      {loading && <div>Loading…</div>}
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {loading && <div className={s["c-employees__loading"]}>Loading…</div>}
+      {error && <div className={s["c-employees__error"]}>{error}</div>}
 
       {!loading && !error && employees.length === 0 && (
-        <div>No employees yet</div>
+        <div className={s["c-employees__empty"]}>No employees yet</div>
       )}
 
       {!loading && !error && employees.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Department</th>
-              <th>Role</th>
-              <th>Location</th>
-              <th>Photo</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees.map((emp) => (
-              <tr key={emp.id}>
-                <td>{emp.name}</td>
-                <td>{emp.department || "—"}</td>
-                <td>{emp.role || "—"}</td>
-                <td>{emp.location || "—"}</td>
-                <td>
-                  {emp.photoBase64 ? (
-                    <img
-                      src={emp.photoBase64}
-                      alt={emp.name}
-                      style={{ width: 40, height: 40, objectFit: "cover" }}
-                    />
-                  ) : (
-                    "N/A"
-                  )}
-                </td>
+        <div className={s["c-employees__tableWrap"]}>
+          <table className={s["c-employees__table"]}>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Role</th>
+                <th>Location</th>
+                <th>Photo</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {employees.map((emp) => (
+                <tr key={emp.id}>
+                  <td>{emp.name}</td>
+                  <td>{emp.department || "\u2014"}</td>
+                  <td>{emp.role || "\u2014"}</td>
+                  <td>{emp.location || "\u2014"}</td>
+                  <td>
+                    {emp.photoBase64 ? (
+                      <img
+                        src={emp.photoBase64}
+                        alt={emp.name}
+                        className={s["c-employees__photo"]}
+                      />
+                    ) : (
+                      <span className={s["c-employees__noPhoto"]}>N/A</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      <footer style={{ marginTop: 16 }}>
+      <footer className={s["c-employees__pagination"]}>
         <button
+          className={s["c-employees__pageBtn"]}
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page === 1}>
           Previous
         </button>
-        <span style={{ margin: "0 8px" }}>Page {page}</span>
-        <button onClick={() => setPage((p) => p + 1)}>Next</button>
+        <span className={s["c-employees__pageInfo"]}>Page {page}</span>
+        <button
+          className={s["c-employees__pageBtn"]}
+          onClick={() => setPage((p) => p + 1)}>
+          Next
+        </button>
       </footer>
     </main>
   );

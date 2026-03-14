@@ -1,3 +1,6 @@
+import { useState } from "react";
+import s from "./AsyncAutoComplete.module.css";
+
 type Props<T> = {
   label: string;
   value: string;
@@ -19,34 +22,40 @@ function AsyncAutocomplete<T>({
   error,
   onQueryChange,
 }: Props<T>) {
+  const [open, setOpen] = useState(false);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const next = e.target.value;
     onChange(next);
     onQueryChange(next);
+    setOpen(true);
+  };
+
+  const handleSelect = (text: string) => {
+    onChange(text);
+    setOpen(false);
   };
 
   return (
-    <div>
+    <div className={s["c-autocomplete"]}>
       <label>
         {label}
         <input value={value} onChange={handleInputChange} />
       </label>
 
-      {loading && <div>Loading…</div>}
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {loading && <div className={s["c-autocomplete__loading"]}>Loading…</div>}
+      {error && <div className={s["c-autocomplete__error"]}>{error}</div>}
 
-      {suggestions && suggestions.length > 0 && (
-        <ul style={{ border: "1px solid #ccc", marginTop: 4 }}>
+      {open && suggestions && suggestions.length > 0 && (
+        <ul className={s["c-autocomplete__dropdown"]}>
           {suggestions.map((item, idx) => {
             const text = String(item[displayKey]);
             return (
               <li
                 key={idx}
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  onChange(text);
-                  onQueryChange(text);
-                }}>
+                className={s["c-autocomplete__item"]}
+                onClick={() => handleSelect(text)}
+              >
                 {text}
               </li>
             );

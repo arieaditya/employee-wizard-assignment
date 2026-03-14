@@ -1,0 +1,67 @@
+/* ===================================================================
+   PhotoUpload
+   =================================================================== */
+
+.c-photo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.c-photo__label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* Hide the native file input, style as button */
+.c-photo__input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.c-photo__button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 16px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-primary);
+  background: var(--color-surface);
+  border: 1px dashed var(--color-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.c-photo__button:hover {
+  background: rgba(59, 130, 246, 0.04);
+  border-style: solid;
+}
+
+/* Preview */
+.c-photo__preview {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.c-photo__image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.c-photo__previewLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}

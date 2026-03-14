@@ -57,19 +57,19 @@ describe("Submit flow", () => {
 
     // basicInfo is now "pending"
     await waitFor(() => {
-      expect(screen.getByText(/Submitting basicInfo/i)).toBeInTheDocument();
+      expect(screen.getByText(/Submitting Basic Info/i)).toBeInTheDocument();
     });
 
     // Resolve basicInfo
     await act(async () => basicDeferred.resolve({}));
 
     await waitFor(() => {
-      expect(screen.getByText(/basicInfo saved/i)).toBeInTheDocument();
+      expect(screen.getByText(/Basic Info saved/i)).toBeInTheDocument();
     });
 
     // details is now "pending"
     await waitFor(() => {
-      expect(screen.getByText(/Submitting details/i)).toBeInTheDocument();
+      expect(screen.getByText(/Submitting Details/i)).toBeInTheDocument();
     });
 
     // Resolve details
