@@ -3,6 +3,7 @@ import { ROLE_OPTIONS, EMPLOYMENT_TYPE_OPTIONS } from "../constants/options";
 import { useAutocomplete } from "../hooks/useAutoComplete";
 import { fetchLocations } from "../services/detailsApi";
 import AsyncAutocomplete from "../components/AsyncAutoComplete";
+import PhotoUpload from "./PhotoUpload";
 
 type Location = { id: number; name: string };
 
@@ -100,12 +101,15 @@ const DetailsStep = ({ basicInfo, value, onChange, onSubmit }: Props) => {
         onQueryChange={setQuery}
       />
 
+      <PhotoUpload
+        value={value.photoBase64}
+        onChange={(base64) => onChange({ ...value, photoBase64: base64 })}
+      />
+
       <label>
         Notes
         <textarea value={value.notes} onChange={handleChange("notes")} />
       </label>
-
-      {/* Photo upload, autocomplete, and progress log will be added here */}
 
       <button onClick={onSubmit} disabled={!isValid}>
         Submit
