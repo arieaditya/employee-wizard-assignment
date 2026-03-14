@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "types": ["jest", "@testing-library/jest-dom", "node"]
   }
 }

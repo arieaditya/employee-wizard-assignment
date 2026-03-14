@@ -35,7 +35,7 @@ function AsyncAutocomplete<T>({
       {loading && <div>Loading…</div>}
       {error && <div style={{ color: "red" }}>{error}</div>}
 
-      {suggestions.length > 0 && (
+      {suggestions && suggestions.length > 0 && (
         <ul style={{ border: "1px solid #ccc", marginTop: 4 }}>
           {suggestions.map((item, idx) => {
             const text = String(item[displayKey]);
