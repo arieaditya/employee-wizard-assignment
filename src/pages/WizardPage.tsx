@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useRole } from "../hooks/useRole";
 import BasicInfoStep from "../components/BasicInfoStep";
 import type { BasicInfoForm } from "../types/employee";
+import type { DetailsForm } from "../types/employee";
+import DetailsStep from "../components/DetailsStep";
 
 const WizardPage = () => {
   const role = useRole();
@@ -12,6 +14,20 @@ const WizardPage = () => {
     email: "",
     department: "",
   });
+
+  const [details, setDetails] = useState<DetailsForm>({
+    role: "",
+    employeeId: "",
+    employmentType: "",
+    location: "",
+    photoBase64: "",
+    notes: "",
+  });
+
+  const handleSubmit = () => {
+    // will later call POST basicInfo/details and redirect
+    console.log("submit clicked");
+  };
 
   const goNextFromStep1 = () => {
     if (role === "admin") setStep(2);
@@ -30,10 +46,12 @@ const WizardPage = () => {
       )}
 
       {step === 2 && (
-        <section>
-          <h2>Step 2 – Details & Submit</h2>
-          {/* DetailsStep will go here soon */}
-        </section>
+        <DetailsStep
+          basicInfo={basicInfo}
+          value={details}
+          onChange={setDetails}
+          onSubmit={handleSubmit}
+        />
       )}
     </main>
   );
