@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useRole } from "../hooks/useRole";
+import { useDraftAutosave, loadDraft, clearDraft } from "../hooks/useDraft";
+import { type Role as UserRole, useRole } from "../hooks/useRole";
 import BasicInfoStep from "../components/BasicInfoStep";
 import type { BasicInfoForm } from "../types/employee";
 import type { DetailsForm } from "../types/employee";
@@ -37,6 +38,10 @@ const WizardPage = () => {
     photoBase64: "",
     notes: "",
   });
+
+  const goNextFromStep1 = () => {
+    if (role === "admin") setStep(2);
+  };
 
   const handleSubmit = async () => {
     if (submitting) return;
@@ -88,8 +93,40 @@ const WizardPage = () => {
     }
   };
 
-  const goNextFromStep1 = () => {
-    if (role === "admin") setStep(2);
+  // When component mounts or role changes, load draft
+  useEffect(() => {
+    const draft = loadDraft(role as UserRole) as {
+      basicInfo: BasicInfoForm;
+      details: DetailsForm;
+    } | null;
+
+    if (draft) {
+      setBasicInfo(draft.basicInfo);
+      setDetails(draft.details);
+    }
+  }, [role]);
+
+  // Build combined object for autosave
+  const combinedDraft = { basicInfo, details };
+
+  // Hook to auto-save every 2 seconds of inactivity
+  useDraftAutosave(role as UserRole, combinedDraft);
+
+  const handleClearDraft = () => {
+    clearDraft(role as UserRole);
+    setBasicInfo({
+      fullName: "",
+      email: "",
+      department: "",
+    });
+    setDetails({
+      role: "",
+      employeeId: "",
+      employmentType: "",
+      location: "",
+      photoBase64: "",
+      notes: "",
+    });
   };
 
   useEffect(() => {
@@ -139,6 +176,10 @@ const WizardPage = () => {
           submitting={submitting}
         />
       )}
+
+      <button type="button" onClick={handleClearDraft}>
+        Clear Draft ({role})
+      </button>
     </main>
   );
 };
