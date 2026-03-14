@@ -1,4 +1,9 @@
 import type { BasicInfoForm } from "../types/employee";
+import { useAutocomplete } from "../hooks/useAutoComplete";
+import { fetchDepartments } from "../services/basicInfoApi";
+import AsyncAutocomplete from "../components/AsyncAutoComplete";
+
+type Department = { id: number; name: string };
 
 type Props = {
   value: BasicInfoForm;
@@ -7,16 +12,23 @@ type Props = {
 };
 
 const BasicInfoStep = ({ value, onChange, onNext }: Props) => {
+  const { query, setQuery, results, loading, error } =
+    useAutocomplete<Department>(fetchDepartments);
+
   const isValid =
     value.fullName.trim().length > 0 &&
     value.email.trim().length > 0 &&
     value.department.trim().length > 0;
 
-  const handleChange =
+  const handleFieldChange =
     (field: keyof BasicInfoForm) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange({ ...value, [field]: e.target.value });
     };
+
+  const handleDepartmentChange = (deptName: string) => {
+    onChange({ ...value, department: deptName });
+  };
 
   return (
     <section>
@@ -27,7 +39,7 @@ const BasicInfoStep = ({ value, onChange, onNext }: Props) => {
         <input
           type="text"
           value={value.fullName}
-          onChange={handleChange("fullName")}
+          onChange={handleFieldChange("fullName")}
         />
       </label>
 
@@ -36,18 +48,20 @@ const BasicInfoStep = ({ value, onChange, onNext }: Props) => {
         <input
           type="email"
           value={value.email}
-          onChange={handleChange("email")}
+          onChange={handleFieldChange("email")}
         />
       </label>
 
-      <label>
-        Department
-        <input
-          type="text"
-          value={value.department}
-          onChange={handleChange("department")}
-        />
-      </label>
+      <AsyncAutocomplete<Department>
+        label="Department"
+        value={value.department}
+        onChange={handleDepartmentChange}
+        displayKey="name"
+        suggestions={results}
+        loading={loading}
+        error={error}
+        onQueryChange={setQuery}
+      />
 
       <button onClick={onNext} disabled={!isValid}>
         Next
