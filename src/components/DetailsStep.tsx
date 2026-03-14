@@ -1,5 +1,10 @@
 import type { DetailsForm, BasicInfoForm } from "../types/employee";
 import { ROLE_OPTIONS, EMPLOYMENT_TYPE_OPTIONS } from "../constants/options";
+import { useAutocomplete } from "../hooks/useAutoComplete";
+import { fetchLocations } from "../services/detailsApi";
+import AsyncAutocomplete from "../components/AsyncAutoComplete";
+
+type Location = { id: number; name: string };
 
 type Props = {
   basicInfo: BasicInfoForm;
@@ -12,6 +17,9 @@ const DetailsStep = ({ basicInfo, value, onChange, onSubmit }: Props) => {
   const email = basicInfo.email;
   const fullName = basicInfo.fullName;
 
+  const { query, setQuery, results, loading, error } =
+    useAutocomplete<Location>(fetchLocations);
+
   const handleChange =
     (field: keyof DetailsForm) =>
     (
@@ -21,6 +29,10 @@ const DetailsStep = ({ basicInfo, value, onChange, onSubmit }: Props) => {
     ) => {
       onChange({ ...value, [field]: e.target.value });
     };
+
+  const handleLocationChange = (loc: string) => {
+    onChange({ ...value, location: loc });
+  };
 
   const emailValid = /\S+@\S+\.\S+/.test(email);
 
@@ -77,14 +89,16 @@ const DetailsStep = ({ basicInfo, value, onChange, onSubmit }: Props) => {
         </select>
       </label>
 
-      <label>
-        Office Location
-        <input
-          type="text"
-          value={value.location}
-          onChange={handleChange("location")}
-        />
-      </label>
+      <AsyncAutocomplete<Location>
+        label="Office Location"
+        value={value.location}
+        onChange={handleLocationChange}
+        displayKey="name"
+        suggestions={results}
+        loading={loading}
+        error={error}
+        onQueryChange={setQuery}
+      />
 
       <label>
         Notes
