@@ -13,6 +13,7 @@ const EmployeesPage = () => {
   const [employees, setEmployees] = useState<MergedEmployee[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -28,6 +29,7 @@ const EmployeesPage = () => {
         if (!cancelled) {
           const merged = mergeByEmail(basic, detail);
           setEmployees(merged);
+          setHasNextPage(basic.length >= PAGE_LIMIT);
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
@@ -110,7 +112,8 @@ const EmployeesPage = () => {
         <span className={s["c-employees__pageInfo"]}>Page {page}</span>
         <button
           className={s["c-employees__pageBtn"]}
-          onClick={() => setPage((p) => p + 1)}>
+          onClick={() => setPage((p) => p + 1)}
+          disabled={!hasNextPage}>
           Next
         </button>
       </footer>
