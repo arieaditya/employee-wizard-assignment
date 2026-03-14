@@ -12,7 +12,7 @@ type Props = {
 };
 
 const BasicInfoStep = ({ value, onChange, onNext }: Props) => {
-  const { query, setQuery, results, loading, error } =
+  const { setQuery, results, loading, error } =
     useAutocomplete<Department>(fetchDepartments);
 
   const isValid =

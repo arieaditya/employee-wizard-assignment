@@ -28,7 +28,7 @@ const DetailsStep = ({
   const email = basicInfo.email;
   const fullName = basicInfo.fullName;
 
-  const { query, setQuery, results, loading, error } =
+  const { setQuery, results, loading, error } =
     useAutocomplete<Location>(fetchLocations);
 
   const handleChange =
