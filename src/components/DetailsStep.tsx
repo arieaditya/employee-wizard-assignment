@@ -4,17 +4,27 @@ import { useAutocomplete } from "../hooks/useAutoComplete";
 import { fetchLocations } from "../services/detailsApi";
 import AsyncAutocomplete from "../components/AsyncAutoComplete";
 import PhotoUpload from "./PhotoUpload";
-
-type Location = { id: number; name: string };
+import ProgressLog, { type SubmitState } from "./ProgressLog";
 
 type Props = {
   basicInfo: BasicInfoForm;
   value: DetailsForm;
   onChange: (value: DetailsForm) => void;
   onSubmit: () => void;
+  submitState: SubmitState;
+  submitting: boolean;
 };
 
-const DetailsStep = ({ basicInfo, value, onChange, onSubmit }: Props) => {
+type Location = { id: number; name: string };
+
+const DetailsStep = ({
+  basicInfo,
+  value,
+  onChange,
+  onSubmit,
+  submitState,
+  submitting,
+}: Props) => {
   const email = basicInfo.email;
   const fullName = basicInfo.fullName;
 
@@ -111,9 +121,11 @@ const DetailsStep = ({ basicInfo, value, onChange, onSubmit }: Props) => {
         <textarea value={value.notes} onChange={handleChange("notes")} />
       </label>
 
-      <button onClick={onSubmit} disabled={!isValid}>
-        Submit
+      <button onClick={onSubmit} disabled={!isValid || submitting}>
+        {submitting ? "Submitting…" : "Submit"}
       </button>
+
+      <ProgressLog state={submitState} />
     </section>
   );
 };

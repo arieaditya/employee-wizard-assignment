@@ -6,10 +6,22 @@ import type { DetailsForm } from "../types/employee";
 import DetailsStep from "../components/DetailsStep";
 import { generateEmployeeId } from "../utils/employeeId";
 import { countEmployeesByDepartment } from "../services/basicInfoApi";
+import { useNavigate } from "react-router-dom";
+import { postBasicInfo } from "../services/basicInfoApi";
+import { postDetails } from "../services/detailsApi";
+import { type SubmitState } from "../components/ProgressLog";
 
 const WizardPage = () => {
+  const navigate = useNavigate();
   const role = useRole();
   const [step, setStep] = useState<1 | 2>(role === "admin" ? 1 : 2);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<SubmitState>({
+    basicInfo: "idle",
+    details: "idle",
+    done: false,
+    error: null,
+  });
 
   const [basicInfo, setBasicInfo] = useState<BasicInfoForm>({
     fullName: "",
@@ -26,9 +38,54 @@ const WizardPage = () => {
     notes: "",
   });
 
-  const handleSubmit = () => {
-    // will later call POST basicInfo/details and redirect
-    console.log("submit clicked");
+  const handleSubmit = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    setSubmitState({
+      basicInfo: "pending",
+      details: "idle",
+      done: false,
+      error: null,
+    });
+
+    try {
+      // Build payloads
+      const basicPayload = {
+        fullName: basicInfo.fullName,
+        email: basicInfo.email,
+        department: basicInfo.department,
+      };
+
+      const detailsPayload = {
+        email: basicInfo.email, // shared identifier (or use employeeId)
+        role: details.role,
+        employeeId: details.employeeId,
+        employmentType: details.employmentType,
+        location: details.location,
+        photoBase64: details.photoBase64,
+        notes: details.notes,
+      };
+
+      // 1) POST basicInfo (with internal ~3s delay in api helper)
+      await postBasicInfo(basicPayload);
+      setSubmitState((prev) => ({ ...prev, basicInfo: "success" }));
+
+      // 2) POST details
+      setSubmitState((prev) => ({ ...prev, details: "pending" }));
+      await postDetails(detailsPayload);
+      setSubmitState((prev) => ({ ...prev, details: "success", done: true }));
+
+      // 3) Redirect to /employees
+      setTimeout(() => navigate("/employees"), 500);
+    } catch (e) {
+      console.error(e);
+      setSubmitState((prev) => ({
+        ...prev,
+        error: "Failed to submit data",
+      }));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const goNextFromStep1 = () => {
@@ -78,6 +135,8 @@ const WizardPage = () => {
           value={details}
           onChange={setDetails}
           onSubmit={handleSubmit}
+          submitState={submitState}
+          submitting={submitting}
         />
       )}
     </main>
