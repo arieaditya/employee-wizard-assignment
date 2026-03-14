@@ -22,6 +22,7 @@ export function useAutocomplete<T>(fetchFn: FetchFn<T>, initialQuery = "") {
       try {
         const data = await fetchFn(query);
         if (!cancelled) setResults(data);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (e) {
         if (!cancelled) setError("Failed to fetch suggestions");
       } finally {
