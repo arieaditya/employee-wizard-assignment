@@ -30,3 +30,14 @@ export async function postBasicInfo(data: unknown) {
   if (!res.ok) throw new Error("Failed to save basic info");
   return res.json();
 }
+
+export async function countEmployeesByDepartment(
+  department: string
+): Promise<number> {
+  const res = await fetch(
+    `${STEP1_BASE_URL}/basicInfo?department=${encodeURIComponent(department)}`
+  );
+  if (!res.ok) throw new Error("Failed to count employees");
+  const data = await res.json();
+  return Array.isArray(data) ? data.length : 0;
+}
